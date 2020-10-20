@@ -8,8 +8,7 @@ import aima.core.search.framework.ActionsFunction;
 import aima.core.search.framework.ResultFunction;
 
 /**
- * @author Ravi Mohan
- * @author Ciaran O'Reilly
+ * @author Patricia Briones Yus, 735576
  */
 public class FichasFunctionFactory {
 	private static ActionsFunction _actionsFunction = null;
@@ -35,17 +34,23 @@ public class FichasFunctionFactory {
 
 			Set<Action> actions = new LinkedHashSet<Action>();
 
-			if (board.canMoveGap(FichasBoard.UP)) {
-				actions.add(FichasBoard.UP);
+			if (board.canMoveGap(FichasBoard.M1I)) {
+				actions.add(FichasBoard.M1I);
 			}
-			if (board.canMoveGap(FichasBoard.DOWN)) {
-				actions.add(FichasBoard.DOWN);
+			if (board.canMoveGap(FichasBoard.M2I)) {
+				actions.add(FichasBoard.M2I);
 			}
-			if (board.canMoveGap(FichasBoard.LEFT)) {
-				actions.add(FichasBoard.LEFT);
+			if (board.canMoveGap(FichasBoard.M3I)) {
+				actions.add(FichasBoard.M3I);
 			}
-			if (board.canMoveGap(FichasBoard.RIGHT)) {
-				actions.add(FichasBoard.RIGHT);
+			if (board.canMoveGap(FichasBoard.M1D)) {
+				actions.add(FichasBoard.M1D);
+			}
+			if (board.canMoveGap(FichasBoard.M2D)) {
+				actions.add(FichasBoard.M2D);
+			}
+			if (board.canMoveGap(FichasBoard.M3D)) {
+				actions.add(FichasBoard.M3D);
 			}
 
 			return actions;
@@ -56,25 +61,35 @@ public class FichasFunctionFactory {
 		public Object result(Object s, Action a) {
 			FichasBoard board = (FichasBoard) s;
 
-			if (FichasBoard.UP.equals(a)
-					&& board.canMoveGap(FichasBoard.UP)) {
+			if (FichasBoard.M1I.equals(a)
+					&& board.canMoveGap(FichasBoard.M1I)) {
 				FichasBoard newBoard = new FichasBoard(board);
-				newBoard.moveGapUp();
+				newBoard.moveGap(-1);
 				return newBoard;
-			} else if (FichasBoard.DOWN.equals(a)
-					&& board.canMoveGap(FichasBoard.DOWN)) {
+			} else if (FichasBoard.M2I.equals(a)
+					&& board.canMoveGap(FichasBoard.M2I)) {
 				FichasBoard newBoard = new FichasBoard(board);
-				newBoard.moveGapDown();
+				newBoard.moveGap(-2);
 				return newBoard;
-			} else if (FichasBoard.LEFT.equals(a)
-					&& board.canMoveGap(FichasBoard.LEFT)) {
+			} else if (FichasBoard.M3I.equals(a)
+					&& board.canMoveGap(FichasBoard.M3I)) {
 				FichasBoard newBoard = new FichasBoard(board);
-				newBoard.moveGapLeft();
+				newBoard.moveGap(-3);
 				return newBoard;
-			} else if (FichasBoard.RIGHT.equals(a)
-					&& board.canMoveGap(FichasBoard.RIGHT)) {
+			} else if (FichasBoard.M1D.equals(a)
+					&& board.canMoveGap(FichasBoard.M1D)) {
 				FichasBoard newBoard = new FichasBoard(board);
-				newBoard.moveGapRight();
+				newBoard.moveGap(1);
+				return newBoard;
+			} else if (FichasBoard.M2D.equals(a)
+					&& board.canMoveGap(FichasBoard.M2D)) {
+				FichasBoard newBoard = new FichasBoard(board);
+				newBoard.moveGap(2);
+				return newBoard;
+			} else if (FichasBoard.M3D.equals(a)
+					&& board.canMoveGap(FichasBoard.M3D)) {
+				FichasBoard newBoard = new FichasBoard(board);
+				newBoard.moveGap(3);
 				return newBoard;
 			}
 

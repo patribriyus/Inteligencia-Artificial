@@ -102,8 +102,11 @@ public class CanibalesBoard {
 		}
 		CanibalesBoard aBoard = (CanibalesBoard) o;
 
-		if (!Arrays.equals(state, aBoard.state))
-			return false;
+		for (int i = 0; i < 5; i++) {
+			if (this.getPositionOf(i) != aBoard.getPositionOf(i)) {
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -176,13 +179,7 @@ public class CanibalesBoard {
 	}
 
 	private int getPositionOf(int val) {
-		int retVal = -1;
-		for (int i = 0; i < 5; i++) {
-			if (state[i] == val) {
-				retVal = i;
-			}
-		}
-		return retVal;
+		return state[val];
 	}
 
 	private void cambiarBarca() {

@@ -39,7 +39,7 @@ public class FichasPract1<T> {
 		fichasSearch(TipoBusqueda.DFS, new TreeSearch(), initialState, "DFS-T", "(1)");
 		
 		/* Búsqueda en profundidad limitada */
-		//fichasSearch(TipoBusqueda.DLS, 9, initialState, "DLS-9", null);
+		fichasSearch(TipoBusqueda.DLS, 10, initialState, "DLS-10", null);
 		fichasSearch(TipoBusqueda.DLS, 9, initialState, "DLS-9", null);
 		fichasSearch(TipoBusqueda.DLS, 3, initialState, "DLS-3", null);
 		
@@ -143,13 +143,13 @@ public class FichasPract1<T> {
     		Object state = initialState;
     		pw.println("SOLUCIÓN:");
     		
-    		pw.printf("%20s\s\s%15s\n", "ESTADO INICIAL", state);
-    		//System.out.printf("%20s\s\s%15s\n", "ESTADO INICIAL", state);
+    		pw.printf("%20s\n%15s\n", "ESTADO INICIAL", state);
+    		//System.out.printf("%20s\n%15s\n", "ESTADO INICIAL", state);
     		
     		for (Action action : actions) {
     			state = resultFunction.result(state, action);
-    			pw.printf("%20s\s\s%15s\n", action.toString(), state);
-    			//System.out.printf("%20s\s\s%15s\n", action.toString(), state);
+    			pw.printf("%20s\n%15s\n", action.toString(), state);
+    			//System.out.printf("%20s\n%15s\n", action.toString(), state);
     		}
 
         } catch (Exception e) {
