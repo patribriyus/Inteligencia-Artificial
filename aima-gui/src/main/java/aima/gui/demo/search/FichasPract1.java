@@ -116,7 +116,7 @@ public class FichasPract1<T> {
 		else maxQueueSize =
 				(int)Float.parseFloat(agent.getInstrumentation().getProperty("maxQueueSize"));
 		
-		System.out.println("Misiones y canibales " + metodo + " -->");
+		System.out.println("Fichas " + metodo + " -->");
 		System.out.println("pathCost: " + depth);
 		System.out.println("nodesExpanded: " + expandedNodes);
 		System.out.println("queueSize: " + queueSize);

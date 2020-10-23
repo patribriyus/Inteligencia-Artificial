@@ -104,7 +104,7 @@ public class EightPuzzlePract1<T> {
 		
 		/* Búsqueda con coste uniforme: GRAFO - ARBOL */
 		eightPuzzleSearch(TipoBusqueda.UCS, new GraphSearch(), extreme, "UCS-G-30", null);
-		eightPuzzleSearch(TipoBusqueda.UCS, new TreeSearch(), extreme, "UCS-T-30", "(2)");
+		eightPuzzleSearch(TipoBusqueda.UCS, new TreeSearch(), extreme, "UCS-T-30", "(1)");
 	}
 	
 	private static <T> void eightPuzzleSearch(TipoBusqueda tipo, T data,
