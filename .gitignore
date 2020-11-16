@@ -431,7 +431,6 @@ aima-core/src/main/java/aima/core/search/framework/GraphSearch.java
 aima-core/src/main/java/aima/core/search/framework/HeuristicFunction.java
 aima-core/src/main/java/aima/core/search/framework/Metrics.java
 aima-core/src/main/java/aima/core/search/framework/Node.java
-aima-core/src/main/java/aima/core/search/framework/NodeExpander.java
 aima-core/src/main/java/aima/core/search/framework/PathCostFunction.java
 aima-core/src/main/java/aima/core/search/framework/PerceptToStateFunction.java
 aima-core/src/main/java/aima/core/search/framework/PrioritySearch.java
@@ -470,7 +469,6 @@ aima-core/src/main/java/aima/core/search/uninformed/BidirectionalSearch.java
 aima-core/src/main/java/aima/core/search/uninformed/BreadthFirstSearch.java
 aima-core/src/main/java/aima/core/search/uninformed/DepthFirstSearch.java
 aima-core/src/main/java/aima/core/search/uninformed/DepthLimitedSearch.java
-aima-core/src/main/java/aima/core/search/uninformed/IterativeDeepeningSearch.java
 aima-core/src/main/java/aima/core/search/uninformed/UniformCostSearch.java
 aima-core/src/main/java/aima/core/util/ArrayIterator.java
 aima-core/src/main/java/aima/core/util/CancelableThread.java
