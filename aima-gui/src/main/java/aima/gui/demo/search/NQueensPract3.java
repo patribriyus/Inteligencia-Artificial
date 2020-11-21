@@ -22,6 +22,7 @@ import aima.core.search.framework.TreeSearch;
 import aima.core.search.local.GeneticAlgorithm;
 import aima.core.search.local.HillClimbingSearch;
 import aima.core.search.local.Individual;
+import aima.core.search.local.Scheduler;
 import aima.core.search.local.SimulatedAnnealingSearch;
 import aima.core.search.uninformed.BreadthFirstSearch;
 import aima.core.search.uninformed.DepthFirstSearch;
@@ -54,8 +55,24 @@ public class NQueensPract3 {
 		nQueensHillClimbingSearch();
 		nQueensGeneticAlgorithmSearch();
 		*/
+		/*
 		nQueensHillClimbingSearch_Statistics(10000);
 		nQueensRandomRestartHillClimbing();
+		
+		int T[] = {400,600,800,1000,1200,1800,2000,2200};
+		int k[] = {10, 30, 50};
+		double delta[] = {0.01, 0.05, 0.1};
+		
+		for(int i=0; i<delta.length; i++) {
+			for(int j=0; j<k.length; j++) {
+				for(int m=0; m<T.length; m++) {
+					nQueensSimulatedAnnealing_Statistics(1000, T[m], k[j], delta[i]);					
+				}
+			}
+		}*/
+		
+		
+		
 	}
 
 	private static void nQueensWithRecursiveDLS() {
@@ -136,12 +153,62 @@ public class NQueensPract3 {
 			SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(
 					new AttackingPairsHeuristic());
 			SearchAgent agent = new SearchAgent(problem, search);
-
+			
 			System.out.println();
 			printActions(agent.getActions());
 			System.out.println("Search Outcome=" + search.getOutcome());
 			System.out.println("Final State=\n" + search.getLastSearchState());
 			printInstrumentation(agent.getInstrumentation());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void nQueensSimulatedAnnealing_Statistics(int numExperiments, int limit, int k, double delta) {
+		System.out.println("\nNQueensDemo Simulated Annealing con " + numExperiments + " estados iniciales diferentes -->");
+		System.out.format("Parámetros Scheduler: Scheduler (%d, %d, %.4f)\n", limit, k, delta);
+		try {
+			Problem problem = null;
+			int numExitos = 0, numFallos = 0,
+				costeExitos = 0, costeFallos = 0, j;
+			// Contendrá todos los estados iniciales únicos (sin repetidos)
+			NQueensBoard estInicial[] = new NQueensBoard[numExperiments];
+			NQueensGoalTest estObjetivo = new NQueensGoalTest();
+			
+			SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(
+					new AttackingPairsHeuristic(), new Scheduler(k, delta, limit));
+			
+			for(int i=0; i<numExperiments; i++) {
+				
+				j = 0;
+				do {
+					estInicial[i] = NQueensBoardAleatorio();
+					
+					if(estInicial[i].equals(estInicial[j])) j = 0;
+					else j++;
+				} while(j<i);
+				
+				problem = new Problem(estInicial[i],
+						NQueensFunctionFactory.getCActionsFunction(),
+						NQueensFunctionFactory.getResultFunction(),
+						estObjetivo);				
+				SearchAgent agent = new SearchAgent(problem, search);
+				
+				/* Se comprueba si el último estado donde se ha encontrado el máximo 
+				 local es igual al objetivo */
+				if(estObjetivo.isGoalState(search.getLastSearchState())) {
+					numExitos++; costeExitos += agent.getActions().size();
+				}
+				else {
+					numFallos++; costeFallos += agent.getActions().size();
+				}
+			}
+			
+			// Estadísticas
+			System.out.format("Fallos: %.2f%n", numFallos*100.0 / numExperiments);
+			System.out.format("Coste medio fallo: %.2f%n", (double)costeFallos / numFallos);
+			System.out.format("Éxitos: %.2f%n", numExitos*100.0 / numExperiments);
+			System.out.format("Coste medio éxitos: %.2f%n", (double)costeExitos / numExitos);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
