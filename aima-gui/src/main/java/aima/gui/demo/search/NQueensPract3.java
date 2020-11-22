@@ -55,10 +55,13 @@ public class NQueensPract3 {
 		nQueensHillClimbingSearch();
 		nQueensGeneticAlgorithmSearch();
 		*/
-		/*
+		
+		// Tarea 1
 		nQueensHillClimbingSearch_Statistics(10000);
+		// Tarea 2
 		nQueensRandomRestartHillClimbing();
 		
+		// Tarea 3
 		int T[] = {400,600,800,1000,1200,1800,2000,2200};
 		int k[] = {10, 30, 50};
 		double delta[] = {0.01, 0.05, 0.1};
@@ -69,9 +72,17 @@ public class NQueensPract3 {
 					nQueensSimulatedAnnealing_Statistics(1000, T[m], k[j], delta[i]);					
 				}
 			}
-		}*/
+		}
 		
+		// Tarea 4
+		nQueensHillSimulatedAnnealingRestart(2200,10,0.1);
 		
+		// Tarea 5
+		for(int i=2; i<80; i+=12) {
+			for(double j=0.1; j<0.9; j+=0.15) {			
+				nQueensGeneticAlgorithmSearch(i, j);
+			}
+		}
 		
 	}
 
@@ -213,6 +224,56 @@ public class NQueensPract3 {
 			e.printStackTrace();
 		}
 	}
+	
+	private static void nQueensHillSimulatedAnnealingRestart(int limit, int k, double delta) {
+		System.out.println("\nNQueens Random RestartSimulated Annealing -->");
+		try {
+			Problem problem = null;
+			int numFallos = 0, numIntentos = 0,
+				costeExito = 0;
+			boolean esObjetivo;
+
+			NQueensBoard estInicial = null;
+			NQueensGoalTest estObjetivo = new NQueensGoalTest();
+			
+			SimulatedAnnealingSearch search = new SimulatedAnnealingSearch(
+					new AttackingPairsHeuristic(), new Scheduler(k, delta, limit));
+			
+			do {
+				numIntentos++;
+				
+				estInicial = NQueensBoardAleatorio();
+				
+				problem = new Problem(estInicial,
+						NQueensFunctionFactory.getCActionsFunction(),
+						NQueensFunctionFactory.getResultFunction(),
+						estObjetivo);				
+				SearchAgent agent = new SearchAgent(problem, search);
+				
+				/* Se comprueba si el último estado donde se ha encontrado el máximo 
+				 local es igual al objetivo */
+				esObjetivo = estObjetivo.isGoalState(search.getLastSearchState());
+				if(!esObjetivo) numFallos++;
+				else costeExito = agent.getActions().size();
+				
+			} while(!esObjetivo);			
+			
+			
+			// Solución
+			System.out.println("Search Outcome=" + search.getOutcome());
+			System.out.println("Final State=\n" + search.getLastSearchState());
+			
+			// Número de reintentos
+			System.out.format("Número de intentos: %d%n", numIntentos);
+			
+			// Estadísticas
+			System.out.format("Fallos: %.2f%n", numFallos*100.0 / numIntentos);
+			System.out.format("Coste éxito: %.2f%n", (double)costeExito);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static void nQueensHillClimbingSearch() {
 		System.out.println("\nNQueensDemo HillClimbing  -->");
@@ -284,18 +345,7 @@ public class NQueensPract3 {
 			e.printStackTrace();
 		}
 	}
-	
-	private static NQueensBoard NQueensBoardAleatorio() {
-		NQueensBoard board = new NQueensBoard(_boardSize);
 		
-		for(int i=0; i<_boardSize; i++) {
-			// Establecerá las reinas de izquierda a derecha
-			board.addQueenAt(new XYLocation(i, (new Random()).nextInt(_boardSize)));
-		}
-		
-		return board;
-	}
-	
 	private static void nQueensRandomRestartHillClimbing() {
 		System.out.println("\nNQueens Random Restart HillClimbing -->");
 		try {
@@ -343,20 +393,31 @@ public class NQueensPract3 {
 			System.out.format("Coste medio fallo: %.2f%n", (double)costeFallos / numFallos);
 			System.out.format("Éxito: %.2f%n", 100.0 / numIntentos);
 			System.out.format("Coste éxito: %.2f%n", (double)costeExito);
-			//System.out.format("Coste medio éxito: %.2f%n", ); // ???
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	private static NQueensBoard NQueensBoardAleatorio() {
+		NQueensBoard board = new NQueensBoard(_boardSize);
+		
+		for(int i=0; i<_boardSize; i++) {
+			// Establecerá las reinas de izquierda a derecha
+			board.addQueenAt(new XYLocation(i, (new Random()).nextInt(_boardSize)));
+		}
+		
+		return board;
+	}
 
-	public static void nQueensGeneticAlgorithmSearch() {
+	public static void nQueensGeneticAlgorithmSearch(int poblacion, double probMutacion) {
 		System.out.println("\nNQueensDemo GeneticAlgorithm  -->");
+		System.out.format("Parámetros iniciales:\tPoblación: %d, Probabilidad mutación: %.2f", poblacion, probMutacion);
 		try {
 			NQueensFitnessFunction fitnessFunction = new NQueensFitnessFunction();
 			// Generate an initial population
 			Set<Individual<Integer>> population = new HashSet<Individual<Integer>>();
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < poblacion; i++) {
 				population.add(fitnessFunction
 						.generateRandomIndividual(_boardSize));
 			}
@@ -364,43 +425,23 @@ public class NQueensPract3 {
 			GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<Integer>(
 					_boardSize,
 					fitnessFunction.getFiniteAlphabetForBoardOfSize(_boardSize),
-					0.15);
-
-			// Run for a set amount of time
-			Individual<Integer> bestIndividual = ga.geneticAlgorithm(
-					population, fitnessFunction, fitnessFunction, 1000L);
-
-			System.out.println("Max Time (1 second) Best Individual=\n"
-					+ fitnessFunction.getBoardForIndividual(bestIndividual));
-			System.out.println("Board Size      = " + _boardSize);
-			System.out.println("# Board Layouts = "
-					+ (new BigDecimal(_boardSize)).pow(_boardSize));
-			System.out.println("Fitness         = "
-					+ fitnessFunction.getValue(bestIndividual));
-			System.out.println("Is Goal         = "
-					+ fitnessFunction.isGoalState(bestIndividual));
-			System.out.println("Population Size = " + ga.getPopulationSize());
-			System.out.println("Itertions       = " + ga.getIterations());
-			System.out.println("Took            = "
-					+ ga.getTimeInMilliseconds() + "ms.");
+					probMutacion);
 
 			// Run till goal is achieved
-			bestIndividual = ga.geneticAlgorithm(population, fitnessFunction,
+			Individual<Integer> bestIndividual = ga.geneticAlgorithm(population, fitnessFunction,
 					fitnessFunction, 0L);
 
 			System.out.println("");
-			System.out.println("Goal Test Best Individual=\n"
+			System.out.println("Mejor individuo=\n"
 					+ fitnessFunction.getBoardForIndividual(bestIndividual));
-			System.out.println("Board Size      = " + _boardSize);
-			System.out.println("# Board Layouts = "
-					+ (new BigDecimal(_boardSize)).pow(_boardSize));
-			System.out.println("Fitness         = "
+			System.out.println("Tamaño tablero      = " + _boardSize);
+			System.out.println("Fitness             = "
 					+ fitnessFunction.getValue(bestIndividual));
-			System.out.println("Is Goal         = "
+			System.out.println("Es objetivo         = "
 					+ fitnessFunction.isGoalState(bestIndividual));
-			System.out.println("Population Size = " + ga.getPopulationSize());
-			System.out.println("Itertions       = " + ga.getIterations());
-			System.out.println("Took            = "
+			System.out.println("Tamaño de población = " + ga.getPopulationSize());
+			System.out.println("Iteraciones         = " + ga.getIterations());
+			System.out.println("Tiempo              = "
 					+ ga.getTimeInMilliseconds() + "ms.");
 
 		} catch (Exception e) {
