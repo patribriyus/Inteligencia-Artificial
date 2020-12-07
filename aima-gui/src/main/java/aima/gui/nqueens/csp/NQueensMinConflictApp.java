@@ -1,9 +1,10 @@
-package aima.gui.sudoku.csp;
+package aima.gui.nqueens.csp;
 
 import java.util.stream.Stream;
 
 import aima.core.search.csp.Assignment;
 import aima.core.search.csp.ImprovedBacktrackingStrategy;
+import aima.core.search.csp.MinConflictsStrategy;
 import aima.core.search.csp.SolutionStrategy;
 
 /**
@@ -11,7 +12,7 @@ import aima.core.search.csp.SolutionStrategy;
  * 
  */
 
-public class SudokuApp {
+public class NQueensMinConflictApp {
 	
 	public static void main(String[] args) {
 		
@@ -20,9 +21,9 @@ public class SudokuApp {
 				Sudoku.listaSudokus2("hardest.txt"));
 		
 		int nSudokusCorrect = 0;
-		SudokuProblem sudoku;
+		NQueensProblem sudoku;
 		Sudoku solucion;
-		SolutionStrategy strategy = new ImprovedBacktrackingStrategy(true, true, true, true);
+		SolutionStrategy strategy = new MinConflictsStrategy(50);
 		
 		for(int i=0; i<listaSudokus.length; i++) {
 			
@@ -30,7 +31,7 @@ public class SudokuApp {
 			listaSudokus[i].imprimeSudoku();
 			System.out.println("SUDOKU INCOMPLETO - Resolviendo");
 			
-			sudoku = new SudokuProblem(listaSudokus[i].pack_celdasAsignadas());
+			sudoku = new NQueensProblem(listaSudokus[i].pack_celdasAsignadas());
 			
 			double start = System.currentTimeMillis();
 			Assignment sol = strategy.solve(sudoku);
