@@ -854,3 +854,13 @@ Fichas/IDS.txt
 Fichas/UCS-G.txt
 Fichas/UCS-T.txt
 Fichas/DLS-10.txt
+aima-gui/top95.txt
+aima-gui/src/main/java/aima/gui/sudoku/csp/top95.txt
+RemoteSystemsTempFiles/.project
+aima-gui/src/main/java/aima/gui/sudoku/csp/easy50.txt
+aima-gui/src/main/java/aima/gui/sudoku/csp/hardest.txt
+aima-gui/src/main/java/aima/gui/sudoku/csp/Sudoku.java
+aima-gui/src/main/java/aima/gui/sudoku/csp/SudokuProblem.java
+aima-gui/src/main/java/aima/gui/sudoku/csp/AvailableCells.java
+aima-gui/hardest.txt
+aima-gui/easy50.txt
