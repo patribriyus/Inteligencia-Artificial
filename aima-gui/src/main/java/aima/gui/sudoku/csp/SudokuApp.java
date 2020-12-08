@@ -41,7 +41,7 @@ public class SudokuApp {
 			
 			// Si es correcto y completo entonces --> la solución es correcta
 			solucion = new Sudoku(sol);
-			if(solucion.correcto() && solucion.completo()) {
+			if(solucion.completo() && solucion.correcto()) {
 				System.out.println("SOLUCION:");
 				solucion.imprimeSudoku();
 				System.out.println("Sudoku solucionado correctamente");
