@@ -14,32 +14,24 @@ import aima.core.util.datastructure.XYLocation;
 
 public class NQueensMinConflictApp {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
 		
-//		NQueensProblem nqueens = new NQueensProblem();
-//		SolutionStrategy strategy = new MinConflictsStrategy(50);
-//		
-//		double start = System.currentTimeMillis();
-//		Assignment sol = strategy.solve(nqueens);
-//		double end = System.currentTimeMillis();
-		
-		//*****************************************************************************
+		int maxSteps = 1;
+		double start = 0, end = 0;
 		
 		NQueensProblem nqueens = new NQueensProblem();
-		int intento = 5;
-		double start = 0, end = 0;
 		SolutionStrategy strategy = null;
 		Assignment sol = null;
 		
 		while(sol == null) {
-			strategy = new MinConflictsStrategy(intento);
+			strategy = new MinConflictsStrategy(maxSteps);
+			
 			start = System.currentTimeMillis();
 			sol = strategy.solve(nqueens);
 			end = System.currentTimeMillis();
-			intento+=3;
+			
+			maxSteps++;
 		}
-		
-		
 		
 		System.out.println(sol + "\n");
 		System.out.println("Time to solve = " + (end - start)/1000 + " segundos\n");
@@ -50,19 +42,17 @@ public class NQueensMinConflictApp {
 	}
 	
 	public static NQueensBoard newBoard(Assignment sol) {
-		// implementar
+		int col, fila;
 		
-		NQueensBoard tab=new NQueensBoard(8);
-		tab.clear();
+		NQueensBoard board = new NQueensBoard(8);
 
-		for (Variable var : sol.getVariables()) {
-		
-			NQueensVariable v = (NQueensVariable) var;
-			int columna=v.getCol();
-			int fila=(int)sol.getAssignment(v);
-			tab.addQueenAt(new XYLocation(fila,columna)); 
+		for (Variable var : sol.getVariables()) {		
+			col = ((NQueensVariable) var).getCol();
+			fila = (int)sol.getAssignment((NQueensVariable) var);
+			
+			board.addQueenAt(new XYLocation(col,fila)); 
 		}
-		return tab;
-		//return null;
+		
+		return board;
 	}
 }

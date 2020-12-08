@@ -12,7 +12,6 @@ import aima.core.search.csp.Variable;
  */
 
 public class NQueensProblem extends CSP {
-     private static final int cells = 64;
      private static List<Variable> variables = null;
 
      /**
