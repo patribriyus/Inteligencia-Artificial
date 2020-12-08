@@ -32,8 +32,16 @@ public class NQueensConstraint implements Constraint {
 	}
 
 	@Override
+	// Se satisface cuando dos reinas no están en la misma fila ni diagonal
 	public boolean isSatisfiedWith(Assignment assignment) {
 		Object value1 = assignment.getAssignment(var1);
-		return value1 == null || !value1.equals(assignment.getAssignment(var2));
+		Object value2 = assignment.getAssignment(var2);
+		
+		return !sonDiagonal(var1.getCol(), (int)value1, var2.getCol(), (int)value2) && !value1.equals(value2);
 	}
+	
+	private boolean sonDiagonal(int i, int k, int j, int s) {
+	   	if(k < s) return Math.abs(j-i)+k == s;
+	   	else return Math.abs(j-i)+s == k;
+    }
 }

@@ -37,11 +37,11 @@ public class SudokuApp {
 			double end = System.currentTimeMillis();
 			
 			System.out.println(sol);
-			System.out.println("Time to solve = " + (end - start));
+			System.out.println("Time to solve = " + (end - start)/1000 + " segundos");
 			
 			// Si es correcto y completo entonces --> la solución es correcta
 			solucion = new Sudoku(sol);
-			if(solucion.correcto() && solucion.correcto()) {
+			if(solucion.correcto() && solucion.completo()) {
 				System.out.println("SOLUCION:");
 				solucion.imprimeSudoku();
 				System.out.println("Sudoku solucionado correctamente");

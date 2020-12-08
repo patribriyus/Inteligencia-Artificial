@@ -1,11 +1,11 @@
 package aima.gui.nqueens.csp;
 
-import java.util.stream.Stream;
-
+import aima.core.environment.nqueens.NQueensBoard;
 import aima.core.search.csp.Assignment;
-import aima.core.search.csp.ImprovedBacktrackingStrategy;
 import aima.core.search.csp.MinConflictsStrategy;
 import aima.core.search.csp.SolutionStrategy;
+import aima.core.search.csp.Variable;
+import aima.core.util.datastructure.XYLocation;
 
 /**
  * @author Patricia Briones Yus, 735576
@@ -16,47 +16,53 @@ public class NQueensMinConflictApp {
 	
 	public static void main(String[] args) {
 		
-		Sudoku [] listaSudokus = union (union(Sudoku.listaSudokus2("easy50.txt"),
-				Sudoku.listaSudokus2("top95.txt")),
-				Sudoku.listaSudokus2("hardest.txt"));
+//		NQueensProblem nqueens = new NQueensProblem();
+//		SolutionStrategy strategy = new MinConflictsStrategy(50);
+//		
+//		double start = System.currentTimeMillis();
+//		Assignment sol = strategy.solve(nqueens);
+//		double end = System.currentTimeMillis();
 		
-		int nSudokusCorrect = 0;
-		NQueensProblem sudoku;
-		Sudoku solucion;
-		SolutionStrategy strategy = new MinConflictsStrategy(50);
+		//*****************************************************************************
 		
-		for(int i=0; i<listaSudokus.length; i++) {
-			
-			System.out.println("---------");
-			listaSudokus[i].imprimeSudoku();
-			System.out.println("SUDOKU INCOMPLETO - Resolviendo");
-			
-			sudoku = new NQueensProblem(listaSudokus[i].pack_celdasAsignadas());
-			
-			double start = System.currentTimeMillis();
-			Assignment sol = strategy.solve(sudoku);
-			double end = System.currentTimeMillis();
-			
-			System.out.println(sol);
-			System.out.println("Time to solve = " + (end - start));
-			
-			// Si es correcto y completo entonces --> la solución es correcta
-			solucion = new Sudoku(sol);
-			if(solucion.correcto() && solucion.correcto()) {
-				System.out.println("SOLUCION:");
-				solucion.imprimeSudoku();
-				System.out.println("Sudoku solucionado correctamente");
-				nSudokusCorrect++;
-			}
+		NQueensProblem nqueens = new NQueensProblem();
+		int intento = 5;
+		double start = 0, end = 0;
+		SolutionStrategy strategy = null;
+		Assignment sol = null;
+		
+		while(sol == null) {
+			strategy = new MinConflictsStrategy(intento);
+			start = System.currentTimeMillis();
+			sol = strategy.solve(nqueens);
+			end = System.currentTimeMillis();
+			intento+=3;
 		}
 		
-		System.out.println("+++++++++");
-		System.out.println("Numero de sudokus solucionados: " + nSudokusCorrect);
 		
+		
+		System.out.println(sol + "\n");
+		System.out.println("Time to solve = " + (end - start)/1000 + " segundos\n");
+		
+		NQueensBoard solucion = newBoard(sol);
+		System.out.println("SOLUCION:");
+		solucion.print();
 	}
 	
-	private static Sudoku[] union(Sudoku[] lista1, Sudoku[] lista2) {
-		return Stream.of(lista1, lista2).flatMap(Stream::of).toArray(Sudoku[]::new);
-	}
+	public static NQueensBoard newBoard(Assignment sol) {
+		// implementar
+		
+		NQueensBoard tab=new NQueensBoard(8);
+		tab.clear();
 
+		for (Variable var : sol.getVariables()) {
+		
+			NQueensVariable v = (NQueensVariable) var;
+			int columna=v.getCol();
+			int fila=(int)sol.getAssignment(v);
+			tab.addQueenAt(new XYLocation(fila,columna)); 
+		}
+		return tab;
+		//return null;
+	}
 }

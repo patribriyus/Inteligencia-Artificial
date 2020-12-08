@@ -8,18 +8,18 @@ import aima.core.search.csp.Variable;
  */
 
 public class NQueensVariable extends Variable{
-	private int columna;
+	private int col;
 
-	public NQueensVariable(String name, int columna) {
+	public NQueensVariable(String name, int col) {
 		super(name);
-		this.columna = columna;
+		this.col = col;
 	}
 
-	public int getColumna() {
-		return columna;
+	public int getCol() {
+		return col;
 	}
 
-	public void setColumna(int columna) {
-		this.columna = columna;
+	public void setCol(int col) {
+		this.col = col;
 	}
 }
